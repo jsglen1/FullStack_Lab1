@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const recipeSchema = new Schema({
-  title: String,
-  ingredients: [String],
-  instructions: String,
-  cookingTime: Number
+  nombre: String,
+  intereses: String,
+  ciudad: String,
+  edad: Number
 });
 
-const Recipe = model("Recipe", recipeSchema);
+const Recipe = model("jugador", recipeSchema);
 export default Recipe;

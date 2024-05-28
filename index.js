@@ -25,13 +25,13 @@ app.get("/api/recipes", async (req, res) => {
   }
 });
 
-// Retrieve a specific recipe by title
-app.get("/api/recipes/:title", async (req, res) => {
-  const title = req.params.title;
+// Retrieve a specific recipe by nombre
+app.get("/api/recipes/:nombre", async (req, res) => {
+  const nombre = req.params.nombre;
   try {
-    const recipe = await Recipe.findOne({ title: title });
+    const recipe = await Recipe.findOne({ nombre: nombre });
     if (!recipe) {
-      return res.status(404).json({ message: "Recipe not found" });
+      return res.status(404).json({ message: "Player not found" });
     }
     res.json(recipe);
   } catch (err) {
@@ -41,11 +41,11 @@ app.get("/api/recipes/:title", async (req, res) => {
 
 // Create a new recipe
 app.post("/api/recipes", async (req, res) => {
-  const { title } = req.body;
+  const { nombre } = req.body;
   try {
-    const existingRecipe = await Recipe.findOne({ title: title });
+    const existingRecipe = await Recipe.findOne({ nombre: nombre });
     if (existingRecipe) {
-      return res.status(409).json({ message: "Recipe already exists" });
+      return res.status(409).json({ message: "Player already exists" });
     }
     const recipe = new Recipe(req.body);
     const newRecipe = await recipe.save();
@@ -61,7 +61,7 @@ app.get("/api/recipes/by-id/:id", async (req, res) => {
   try {
       const recipe = await Recipe.findById(id);
       if (!recipe) {
-          return res.status(404).json({ message: "Recipe not found" });
+          return res.status(404).json({ message: "Player not found" });
       }
       res.json(recipe);
   } catch (err) {
@@ -73,22 +73,22 @@ app.get("/api/recipes/by-id/:id", async (req, res) => {
 // Update a recipe by ID and Update
 app.put("/api/recipes/by-id/:id", async (req, res) => {
   const id = req.params.id;
-  const { title, ingredients, instructions, cookingTime } = req.body;
+  const { nombre, intereses, ciudad, edad } = req.body;
 
   try {
       const updatedRecipe = await Recipe.findByIdAndUpdate(
           id,
           {
-              title,
-              ingredients,
-              instructions,
-              cookingTime: parseInt(cookingTime, 10)
+              nombre,
+              intereses,
+              ciudad,
+              edad: parseInt(edad, 10)
           },
           { new: true }
       );
 
       if (!updatedRecipe) {
-          return res.status(404).json({ message: "Recipe not found" });
+          return res.status(404).json({ message: "Player not found" });
       }
 
       res.json(updatedRecipe);
@@ -108,10 +108,10 @@ app.delete("/api/recipes/:id", async (req, res) => {
   try {
     const recipe = await Recipe.findById(id);
     if (!recipe) {
-      return res.status(404).json({ message: "Recipe not found" });
+      return res.status(404).json({ message: "Player not found" });
     }
     await Recipe.deleteOne({ _id: id });
-    res.json({ message: "Recipe deleted" });
+    res.json({ message: "Player deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

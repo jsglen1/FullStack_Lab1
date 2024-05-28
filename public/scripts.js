@@ -10,16 +10,16 @@ document.addEventListener("DOMContentLoaded", function () {
           .then(response => response.json())
           .then(recipes => {
               recipeList.innerHTML = "";
-              recipes.forEach(recipe => {
+              recipes.forEach(player => {
                   const row = document.createElement("tr");
                   row.innerHTML = `
-                      <td>${recipe.title}</td>
-                      <td>${recipe.ingredients.join(", ")}</td>
-                      <td>${recipe.instructions}</td>
-                      <td>${recipe.cookingTime} minutes</td>
+                      <td>${player.nombre}</td>
+                      <td>${player.intereses}</td>
+                      <td>${player.ciudad}</td>
+                      <td>${player.edad}</td>
                       <td>
-                          <button onclick="updateRecipe('${recipe._id}')">Update</button>
-                          <button onclick="deleteRecipe('${recipe._id}')">Delete</button>
+                          <button onclick="updateRecipe('${player._id}')">Editar</button>
+                          <button onclick="deleteRecipe('${player._id}')">Eliminar</button>
                       </td>
                   `;
                   recipeList.appendChild(row);
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .catch(error => console.error("Error fetching recipes:", error));
   }
 
-  // Function to handle form submission for adding a new recipe
+  // Function to handle form submission for adding a new player
   addRecipeForm.addEventListener("submit", function (event) {
       event.preventDefault();
       const formData = new FormData(addRecipeForm);
@@ -47,16 +47,16 @@ document.addEventListener("DOMContentLoaded", function () {
               if (response.ok) {
                   return response.json();
               }
-              throw new Error("Failed to add recipe");
+              throw new Error("Failed to add player");
           })
           .then(() => {
               addRecipeForm.reset();
               getAllRecipes();
           })
-          .catch(error => console.error("Error adding recipe:", error));
+          .catch(error => console.error("Error adding player:", error));
   });
 
-  // The Function to handle form submission for updating a recipe
+  // The Function to handle form submission for updating a player
 editRecipeForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const formData = new FormData(editRecipeForm);
@@ -76,18 +76,18 @@ editRecipeForm.addEventListener("submit", function (event) {
           if (response.ok) {
               return response.json();
           }
-          throw new Error("Failed to update recipe");
+          throw new Error("Failed to update player");
       })
       .then(() => {
           editRecipeForm.reset();
           getAllRecipes();
       })
-      .catch(error => console.error("Error updating recipe:", error));
+      .catch(error => console.error("Error updating player:", error));
 });
 
 
   window.deleteRecipe = function (id) {
-      if (confirm("Are you sure you want to delete this recipe?")) {
+      if (confirm("Are you sure you want to delete this player?")) {
           fetch(`/api/recipes/${id}`, {
               method: "DELETE"
           })
@@ -95,26 +95,26 @@ editRecipeForm.addEventListener("submit", function (event) {
                   if (response.ok) {
                       getAllRecipes();
                   } else {
-                      throw new Error("Failed to delete recipe");
+                      throw new Error("Failed to delete player");
                   }
               })
-              .catch(error => console.error("Error deleting recipe:", error));
+              .catch(error => console.error("Error deleting player:", error));
       }
   };
 
-  // Function to populate the update form with the selected recipe's data
+  // Function to populate the update form with the selected player's data
   window.updateRecipe = function (id) {
       fetch(`/api/recipes/by-id/${id}`)
           .then(response => response.json())
-          .then(recipe => {
+          .then(player => {
               const editForm = document.getElementById("editRecipeForm");
-              editForm.querySelector("#recipeId").value = recipe._id;
-              editForm.querySelector("#title").value = recipe.title;
-              editForm.querySelector("#ingredients").value = recipe.ingredients.join("\n");
-              editForm.querySelector("#instructions").value = recipe.instructions;
-              editForm.querySelector("#cookingTime").value = recipe.cookingTime;
+              editForm.querySelector("#recipeId").value = player._id;
+              editForm.querySelector("#nombre").value = player.nombre;
+              editForm.querySelector("#intereses").value = player.intereses.join("\n");
+              editForm.querySelector("#ciudad").value = player.ciudad;
+              editForm.querySelector("#edad").value = player.edad;
           })
-          .catch(error => console.error("Error fetching recipe for update:", error));
+          .catch(error => console.error("Error fetching player for update:", error));
   };
 
   getAllRecipes();
