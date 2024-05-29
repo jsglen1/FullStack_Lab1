@@ -1,4 +1,4 @@
-# Recipe Management System
+# Players Management System
 Welcome to the players Management System! This project is a full-stack application aimed at helping users organize and manage their players efficiently. Our Recipe CRUD API, powered by MongoDB, lets you easily Create, Read, Update, and Delete players. With a basic HTML frontend, you can interact with your players effortlessly. Let's get cooking!
 
 # Installation and Usage
